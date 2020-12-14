@@ -3,6 +3,7 @@ from sklearn.datasets import fetch_20newsgroups # test dataset
 from sklearn.decomposition import TruncatedSVD # for features reduction
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import Normalizer
+import pandas as pd
 
 
 
@@ -90,13 +91,39 @@ class DataHandler(IDataHandler):
     Concrete DataHandler class, currently in development
     """
     def __init__(self):
-        pass
+        self.dataset = None
+        self.docterm_mat = None
+
+
+    def _vectorize(self):
+        vectorizer = TfidfVectorizer(max_df=0.7, min_df=2, use_idf=True)
+        return vectorizer.fit_transform(self.dataset['Text'])
+    
+
+    def load_dataset(self, dataset_path):
+        self.dataset = pd.read_csv(dataset_path)
+
+    
+    def set_dataset(self, dataset):
+        self.dataset = pd.DataFrame(dataset)
+
+
+    def get_dataset(self):
+        return self.dataset
 
 
     def get_docterm_matrix(self):
-        pass
+        if self.docterm_mat == None:
+            self.docterm_mat = self._vectorize()
+        return self.docterm_mat
+
+
+    def set_docterm_mat(self, docterm_mat):
+        self.docterm_mat = docterm_mat
 
 
 
 # data_handler = HandlerCreator.create_data_handler(test=True)
 # print(data_handler.get_docterm_matrix())
+
+
