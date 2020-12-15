@@ -24,7 +24,6 @@ class HandlerCreator:
 
 
 
-
 class IDataHandler:
     """
     Interface for data handling
@@ -33,10 +32,26 @@ class IDataHandler:
         pass
 
 
+    def get_dataset(self):
+        raise NotImplementedError
+
+
+    def set_dataset(self, dataset):
+        raise NotImplementedError
+
+
+    def load_dataset(self, dataset_path=None):
+        raise NotImplementedError
+
+
     def get_docterm_matrix(self):
         raise NotImplementedError
 
 
+    def set_docterm_mat(self, docterm_mat):
+        raise NotImplementedError
+
+    
 
 
 
@@ -49,10 +64,11 @@ class DataHandlerTest(IDataHandler):
         - get_docterm_matrix : get the (document, term) matrix, reduced by SVD method. This matrix is a dense numpy.ndarray
     """
     def __init__(self):
-        pass
+        self.dataset = None
+        self.docterm_mat = None
 
 
-    def _import_data(self):
+    def load_dataset(self, dataset_path=None):
         categories = [
             'alt.atheism',
             'talk.religion.misc',
@@ -60,6 +76,14 @@ class DataHandlerTest(IDataHandler):
             'sci.space',
         ]
         self.dataset = fetch_20newsgroups(subset='all', categories=categories, shuffle=True, random_state=42)
+
+
+    def get_dataset(self):
+        return self.dataset
+
+    
+    def set_dataset(self, dataset):
+        self.dataset = dataset
 
 
     def _vectorize(self):
@@ -78,9 +102,13 @@ class DataHandlerTest(IDataHandler):
         """
         Return the reduced document-term matrix. Each row of the matrix represents a document vector
         """
-        self._import_data()
-        docterm_mat = self._vectorize()
-        return self._reduce_features(docterm_mat)
+        if self.docterm_mat == None:
+            self.docterm_mat = self._vectorize()
+        return self._reduce_features(self.docterm_mat)
+
+
+    def set_docterm_mat(self, docterm_mat):
+        self.docterm_mat = docterm_mat
 
 
 
