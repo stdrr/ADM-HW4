@@ -1,7 +1,7 @@
 # Homework 4 - Hard coding
 ---
 
-This repository holds the answers to the 4<super>th</super> homework of Algorithmic Methods of Data Mining, Data Science course at Sapienza University of Rome. 
+This repository holds the answers to the 4<sup>th</sup> homework of Algorithmic Methods of Data Mining, Data Science course at Sapienza University of Rome. 
 
 This homework was carried out by Giacomo Ruà, Stefano D'Arrigo and Tansel Simsek (Group 6). 
 
